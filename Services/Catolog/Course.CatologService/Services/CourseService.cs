@@ -25,11 +25,11 @@ namespace FreeCourse.CatologService.Services
         public async Task<Response<CourseDto>> CreateAsync(CreateCourseDto createCourseDto)
         {
             var map = mapper.Map<Course>(createCourseDto);
-            createCourseDto.CreatedDate = DateTime.Now;
+            map.CreatedDate = DateTime.Now;
 
             await courseCollection.InsertOneAsync(map);
 
-            var resultMap = mapper.Map<CourseDto>(createCourseDto);
+            var resultMap = mapper.Map<CourseDto>(map);
             return Response<CourseDto>.Success(resultMap, 201);
         }
 
@@ -80,7 +80,7 @@ namespace FreeCourse.CatologService.Services
             return Response<CourseDto>.Success(map, 200);
         }
 
-        public async Task<Response<CourseDto>> GetAllByUserIdAsync(string id)
+        public async Task<Response<List<CourseDto>>> GetAllByUserIdAsync(string id)
         {
             var courses = await courseCollection.Find(x => x.UserId == id).ToListAsync();
 
@@ -96,9 +96,9 @@ namespace FreeCourse.CatologService.Services
                 courses = new List<Course>();
             }
 
-            var map = mapper.Map<CourseDto>(courses);
+            var map = mapper.Map<List<CourseDto>>(courses);
 
-            return Response<CourseDto>.Success(map, 200);
+            return Response<List<CourseDto>>.Success(map, 200);
         }
 
         public async Task<Response<NoContent>> UpdateAsync(UpdateCourseDto updateCourseDto)

@@ -10,13 +10,19 @@ namespace FreeCourse.CatologService.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Category, CreateCategoryDto>().ReverseMap();
+            CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+            CreateMap<CategoryDto,UpdateCategoryDto>().ReverseMap();
+            CreateMap<CategoryDto, CreateCategoryDto>().ReverseMap();
 
-            CreateMap<Category, CreateCourseDto>();
-            CreateMap<Category, CourseDto>();
-            CreateMap<Category, UpdateCourseDto>();
+            CreateMap<Course, CreateCourseDto>().ReverseMap();
+            CreateMap<Course, CourseDto>().ReverseMap();
+            CreateMap<Course, UpdateCourseDto>().ReverseMap();
+            CreateMap<CourseDto, CreateCourseDto>().ReverseMap();
+            CreateMap<CourseDto, UpdateCourseDto>().ReverseMap();
 
-            CreateMap<Category, FeatureDto>();
+            CreateMap<Feature, FeatureDto>().ReverseMap();
             
         }
     }
