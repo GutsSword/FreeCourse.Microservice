@@ -13,7 +13,7 @@ namespace FreeCourse.CatologService.Services
         private readonly IMongoCollection<Category> categoryCollection;
         private readonly IMapper mapper;
 
-        public CategoryService(IDatabaseSettings databaseSettings, IMongoCollection<Category> categoryCollection, IMapper mapper)
+        public CategoryService(IDatabaseSettings databaseSettings, IMapper mapper)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
@@ -34,7 +34,7 @@ namespace FreeCourse.CatologService.Services
         {
             var map = mapper.Map<Category>(createCategoryDto);
             await categoryCollection.InsertOneAsync(map);
-            var resultMap = mapper.Map<CategoryDto>(createCategoryDto);
+            var resultMap = mapper.Map<CategoryDto>(map);
 
             return Response<CategoryDto>.Success(resultMap, 201);
         }
@@ -53,9 +53,8 @@ namespace FreeCourse.CatologService.Services
         public async Task<Response<CategoryDto>> DeleteAsync(string id)
         {           
             await categoryCollection.DeleteOneAsync(x=>x.CategoryId == id);
-            var resultMap = mapper.Map<CategoryDto>(id);
 
-            return Response<CategoryDto>.Success(resultMap, 200);
+            return Response<CategoryDto>.Success(200);
         }
 
     }
