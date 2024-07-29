@@ -2,6 +2,7 @@
 using FreeCourse.CatologService.Dtos.CourseDtos;
 using FreeCourse.CatologService.Services;
 using FreeCourse.Shared.ControllerBases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
