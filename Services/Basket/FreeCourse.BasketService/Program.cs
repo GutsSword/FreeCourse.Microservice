@@ -1,4 +1,6 @@
+using FreeCourse.BasketService.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     opt.Authority = builder.Configuration["IdentityServerUrl"];
     opt.RequireHttpsMetadata = false;
 });
+
+builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("RedisSettings"));
+builder.Services.AddSingleton<RedisService>(sp =>
+{
+    var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;  // appsettingsteki datalarý aktararak deðer döndürür.
+    var redis = new RedisService(redisSettings.Host,redisSettings.Port); // Yeni bir nesne örneði oluþtur.
+    redis.Connect(); // Baðlantýyý kur.
+
+    return redis;
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

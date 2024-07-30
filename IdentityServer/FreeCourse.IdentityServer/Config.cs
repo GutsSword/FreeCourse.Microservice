@@ -73,7 +73,6 @@ namespace FreeCourse.IdentityServer
                     {
                         "CatologFullPermission" ,
                         "PhotoStockFullPermission",
-                        "BasketFullPermission",
                         IdentityServerConstants.LocalApi.ScopeName,
                     },
                 },
