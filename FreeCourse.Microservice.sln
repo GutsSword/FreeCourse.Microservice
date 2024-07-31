@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{BB0F9E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourse.BasketService", "Services\Basket\FreeCourse.BasketService\FreeCourse.BasketService.csproj", "{78CF1274-EAAB-43AB-A5A4-0DA0DBE44213}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discount", "Discount", "{32D9A67C-E383-44B8-B6D5-AFBBD89AAB89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourse.DiscountService", "Services\Discount\FreeCourse.DiscountService\FreeCourse.DiscountService.csproj", "{4BE59F42-532B-4686-B2EC-D0749EC72B61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,10 @@ Global
 		{78CF1274-EAAB-43AB-A5A4-0DA0DBE44213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78CF1274-EAAB-43AB-A5A4-0DA0DBE44213}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78CF1274-EAAB-43AB-A5A4-0DA0DBE44213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE59F42-532B-4686-B2EC-D0749EC72B61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE59F42-532B-4686-B2EC-D0749EC72B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE59F42-532B-4686-B2EC-D0749EC72B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE59F42-532B-4686-B2EC-D0749EC72B61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +77,8 @@ Global
 		{31BD5C07-D64A-48C3-88DA-1B00DE6C5331} = {F5A6B979-E6EC-4C70-BD9F-6124F7FC91E5}
 		{BB0F9EAF-B2BB-46E4-9185-1ABD1375EA9A} = {4CB29BB0-9D35-43FC-8FBA-0828ECA3CBDF}
 		{78CF1274-EAAB-43AB-A5A4-0DA0DBE44213} = {BB0F9EAF-B2BB-46E4-9185-1ABD1375EA9A}
+		{32D9A67C-E383-44B8-B6D5-AFBBD89AAB89} = {4CB29BB0-9D35-43FC-8FBA-0828ECA3CBDF}
+		{4BE59F42-532B-4686-B2EC-D0749EC72B61} = {32D9A67C-E383-44B8-B6D5-AFBBD89AAB89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {545ABEE3-B3CE-465C-A24B-511C7847DFFF}
