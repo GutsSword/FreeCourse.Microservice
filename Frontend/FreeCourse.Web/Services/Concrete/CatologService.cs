@@ -1,6 +1,7 @@
 ﻿using FreeCourse.Shared.Dtos;
 using FreeCourse.Web.Models;
 using FreeCourse.Web.Models.Catalog;
+using FreeCourse.Web.Models.PhotoStock;
 using FreeCourse.Web.Services.Interfaces;
 using System.Net.Http.Json;
 
@@ -9,15 +10,22 @@ namespace FreeCourse.Web.Services.Concrete
     public class CatologService : ICatologService
     {
         private readonly HttpClient _httpClient;
+        private readonly IPhotoStockService _photoStockService;
 
-        public CatologService(HttpClient httpClient)
+        public CatologService(HttpClient httpClient, IPhotoStockService photoStockService)
         {
             _httpClient = httpClient;
+            _photoStockService = photoStockService;
         }
-         
+
         public async Task<bool> CreateCourseAsync(CreateCourseViewModel createCourseViewModel)
         {
-            var response = await _httpClient.PostAsJsonAsync<CreateCourseViewModel>("courses", createCourseViewModel);
+            var photo = await _photoStockService.UploadPhoto(createCourseViewModel.PhotoFormFile);
+
+            if (photo is not null)
+                createCourseViewModel.Picture = photo.Url;
+
+            var response = await _httpClient.PostAsJsonAsync<CreateCourseViewModel>("courses", createCourseViewModel);          
 
             if(response.IsSuccessStatusCode)
                 return true;

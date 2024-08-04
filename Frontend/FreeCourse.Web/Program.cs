@@ -29,6 +29,12 @@ builder.Services.AddHttpClient<ICatologService, CatologService>(opt =>
     // Her istekten sonra client_credentialdan token alma delegesi yazýlacak.
 }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
+builder.Services.AddHttpClient<IPhotoStockService, PhotoStockService>(opt =>
+{
+    opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.PhotoStock.Path}");
+    // Her istekten sonra client_credentialdan token alma delegesi yazýlacak.
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+
 
 builder.Services.AddHttpClient<IUserService, UserService>(opt =>
 {
