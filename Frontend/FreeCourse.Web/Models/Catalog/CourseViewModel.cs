@@ -8,6 +8,22 @@
         public string Picture { get; set; }
         public string UserId { get; set; }
         public decimal Price { get; set; }
+        private int _shorDescription;
+
+        public string ShortDescription
+        {
+            get
+            {
+                if(Description.Length>100)
+                    return Description.Substring(0,100) + "..." ;
+
+                else return Description ;
+            }
+            
+
+        }
+
+        public string StockPictureUrl { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

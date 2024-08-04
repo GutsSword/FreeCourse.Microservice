@@ -8,6 +8,7 @@
         public string Picture { get; set; }
         public string UserId { get; set; }
         public decimal Price { get; set; }  
+        public IFormFile PhotoFormFile { get; set; }
 
         public FeatureViewModel Feature { get; set; }
 
