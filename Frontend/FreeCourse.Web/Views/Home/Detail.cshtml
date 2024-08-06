@@ -23,7 +23,7 @@
             <div class="card-body">
                 <h4 class="card-title">Fiyat : @Model.Price TL</h4>
                 <div class="d-grid">
-                    <a asp-controller="Basket" asp-action="AddBasketItem" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Sepete ekle</a>
+                    <a asp-controller="Basket" asp-action="AddToBasket" asp-route-id="@Model.CourseId" class="btn btn-primary">Sepete ekle</a>
                 </div>
             </div>
         </div>
