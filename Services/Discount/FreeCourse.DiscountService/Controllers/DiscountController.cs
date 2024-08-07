@@ -39,7 +39,7 @@ namespace FreeCourse.DiscountService.Controllers
         public async Task<IActionResult> GetByCode(string code)
         {
             var userId = identityService.GetUserId;
-            var values = await service.GetByCodeByUserId(code,userId);
+            var values = await service.GetByCodeByUserId(code, userId);
 
             return CreateActionResultInstance(values);
         }

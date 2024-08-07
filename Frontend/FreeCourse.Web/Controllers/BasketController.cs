@@ -17,13 +17,12 @@ namespace FreeCourse.Web.Controllers
             this.catologService = catologService;
         }
 
-        public async Task<IActionResult>Index()
+        public async Task<IActionResult> Index()
         {
             var response = await basketService.GetBasket();
             return View(response);
         }
 
-        [HttpGet]
         public async Task<IActionResult> AddToBasket(string id)
         {
             var courseItem = await catologService.GetByCourseId(id);
@@ -36,13 +35,33 @@ namespace FreeCourse.Web.Controllers
 
             await basketService.AddBasketItem(basketItem);
 
+            return RedirectToAction("Index", "Basket");
+        }
+
+        public async Task<IActionResult> DeleteBasketItem(string courseId)
+        {       
+            await basketService.RemoveBasketItem(courseId);
             return RedirectToAction("Index","Basket");
         }
 
-        public async Task<IActionResult> DeleteBasketItem(string id)
-        {       
-            await basketService.RemoveBasketItem(id);
-            return View();
+        public async Task<IActionResult> ApplyDiscountCode(string discountCode)
+        {
+            if(!ModelState.IsValid)
+            {
+                TempData["discountError"] = ModelState.Values.SelectMany(x => x.Errors).Select(x=>x.ErrorMessage).First();
+                return RedirectToAction("Index", "Basket");
+            }
+            var discountStatus = await basketService.ApplyDiscount(discountCode);
+            TempData["discountStatus"] = discountStatus;
+
+            return RedirectToAction("Index","Basket");
+        }
+
+        public async Task<IActionResult> CancelAppliedDiscountCode()
+        {
+            await basketService.CancelApplyDiscount();
+
+            return RedirectToAction("Index","Basket");
         }
     }
 }

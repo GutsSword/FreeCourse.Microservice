@@ -40,7 +40,7 @@ namespace FreeCourse.DiscountService.Services
 
         public async Task<Response<Discount>> GetByCodeByUserId(string code, string userId)
         {
-            var discount = await connection.QueryFirstAsync("select * from discount where userid=@UserId and code=@Code", new
+            var discount = await connection.QueryAsync<Discount>("select * from discount where userid=@UserId and code=@Code", new
             {
                 UserId = userId,
                 Code = code,
@@ -48,10 +48,11 @@ namespace FreeCourse.DiscountService.Services
 
             var hasDiscount = discount.FirstOrDefault();
 
-            if (discount == null)
+            
+            if (hasDiscount == null)
                 return Response<Discount>.Fail("Discount not found.", 404);
             else
-                return Response<Discount>.Success(discount, 200); 
+                return Response<Discount>.Success(hasDiscount, 200); 
         }
 
         public async Task<Response<Discount>> GetByIdDiscount(int id)

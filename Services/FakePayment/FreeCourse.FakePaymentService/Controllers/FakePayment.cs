@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FreeCourse.FakePaymentService.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreeCourse.FakePaymentService.Controllers
@@ -8,7 +9,7 @@ namespace FreeCourse.FakePaymentService.Controllers
     public class FakePayment : ControllerBase
     {
         [HttpPost]
-        public IActionResult ReceivePayment()
+        public IActionResult ReceivePayment(PaymentDto paymentDto)
         {
             return Ok("Payment process successfull.");
         }

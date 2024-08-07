@@ -2,6 +2,7 @@
 using FreeCourse.Services.OrderService.Application.CQRS.Queries;
 using FreeCourse.Services.OrderService.Application.Dtos;
 using FreeCourse.Shared.ControllerBases;
+using FreeCourse.Shared.Dtos;
 using FreeCourse.Shared.Services;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace FreeCourse.Services.OrderService.Api.Controllers
             var userId = _identityService.GetUserId;
             var response = await mediator.Send(new GetOrdersByUserIdQuery { UserId = userId});
 
-            return Ok(response);
+            return CreateActionResultInstance(response);
         }
 
         [HttpPost]
@@ -36,7 +37,7 @@ namespace FreeCourse.Services.OrderService.Api.Controllers
         {
             var response = await mediator.Send(createOrderCommand);
 
-            return Ok("Sipariş Eklendi.");
+            return Ok(response);
         }
     }
 }
