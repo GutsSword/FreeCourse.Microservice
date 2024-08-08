@@ -1,6 +1,8 @@
+using FreeCourse.BasketService.Consumer;
 using FreeCourse.BasketService.Redis;
 using FreeCourse.BasketService.Services;
 using FreeCourse.Shared.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -35,6 +37,26 @@ builder.Services.AddSingleton<RedisService>(sp =>
     return redis;
 });
 
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<CourseNameChangedBasketConsumer>();
+    // Default Port : 5672
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMqUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint("course-NameChanged-basket-event", e =>
+        {
+            e.ConfigureConsumer<CourseNameChangedBasketConsumer>(context);
+        });
+    });
+});
+
+builder.Services.AddMassTransitHostedService();
 
 builder.Services.AddControllers(opt =>
 {

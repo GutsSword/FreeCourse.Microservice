@@ -1,7 +1,11 @@
+
+using MassTransit;
+using MassTransit.RabbitMqTransport;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,34 @@ builder.Services.AddControllers(opt =>
     opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicty));
 });
 
+
+//builder.Services.AddMassTransit(x =>
+//{
+//    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+//    {
+//        cfg.Host(builder.Configuration["RabbitMqUrl"], "/", hostConfig =>
+//        {
+//            hostConfig.Username("guest");
+//            hostConfig.Password("guest");
+//        });
+//    }));
+//});
+
+builder.Services.AddMassTransit(x =>
+{
+    // Default Port : 5672
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMqUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+    });
+});
+
+builder.Services.AddMassTransitHostedService();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,5 +70,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+var bus = app.Services.GetRequiredService<IBusControl>();
+bus.Start();
 app.Run();

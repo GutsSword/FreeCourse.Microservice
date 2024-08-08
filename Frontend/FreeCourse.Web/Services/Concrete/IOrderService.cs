@@ -7,7 +7,7 @@ namespace FreeCourse.Web.Services.Concrete
         Task<OrderCreatedViewModel> CreateOrder(CheckoutInfoViewModel checkoutInfoViewModel);
 
         // Asenkron
-        Task SuspendOrder(CheckoutInfoViewModel checkoutInfoViewModel);
+        Task<OrderSuspendViewModel> SuspendOrder(CheckoutInfoViewModel checkoutInfoViewModel);
 
         Task<List<OrderViewModel>> GetAllOrders();
     }

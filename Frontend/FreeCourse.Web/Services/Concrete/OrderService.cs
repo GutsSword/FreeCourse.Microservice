@@ -3,6 +3,7 @@ using FreeCourse.Shared.Services;
 using FreeCourse.Web.Models.FakePayment;
 using FreeCourse.Web.Models.Orders;
 using FreeCourse.Web.Services.Interfaces;
+using System.Net.Http.Json;
 
 namespace FreeCourse.Web.Services.Concrete
 {
@@ -98,9 +99,64 @@ namespace FreeCourse.Web.Services.Concrete
             return response.Data;
         }
 
-        public Task SuspendOrder(CheckoutInfoViewModel checkoutInfoViewModel)
+        public async Task<OrderSuspendViewModel> SuspendOrder(CheckoutInfoViewModel checkoutInfoViewModel)
         {
-            throw new NotImplementedException();
+            var basket = await basketService.GetBasket();
+
+            var orderCreateInput = new OrderCreateViewModel()
+            {
+                BuyerId = identityService.GetUserId,
+                Address = new AddressCreateViewModel
+                {
+                    District = checkoutInfoViewModel.District,
+                    Line = checkoutInfoViewModel.Line,
+                    Province = checkoutInfoViewModel.Province,
+                    Street = checkoutInfoViewModel.Street,
+                    ZipCode = checkoutInfoViewModel.ZipCode
+                },
+            };        
+
+            basket.BasketItem.ForEach(b =>
+            {
+                var orderItem = new OrderItemCreateViewModel()
+                {
+                    ProductId = b.CourseId,
+                    ProductName = b.CourseName,
+                    Price = b.GetCurrentPrice,
+                    PictureUrl = "Herhangi bir görsel bulunmamaktadır",
+                };
+                orderCreateInput.OrderItems.Add(orderItem);
+            });          
+
+            var paymentInfo = new PaymentInfoViewModel()
+            {
+                CardName = checkoutInfoViewModel.CardName,
+                CardNumber = checkoutInfoViewModel.CardNumber,
+                CVV = checkoutInfoViewModel.CVV,
+                Expiration = checkoutInfoViewModel.Expiration,
+                TotalPrice = basket.TotalPrice,
+                Order = orderCreateInput,
+            };
+
+
+            var responsePayment = await paymentService.ReceivePayment(paymentInfo);
+
+            if (!responsePayment)
+            {
+                return new OrderSuspendViewModel
+                {
+                    Error = "Ödeme alınamadı.",
+                    IsSuccessful = false
+                };
+            }
+
+            await basketService.DeleteBasket();
+
+            return new OrderSuspendViewModel()
+            {
+                OrderId = new Random().Next(1, 10000),
+                IsSuccessful = true
+            };
         }
     }
 }

@@ -1,6 +1,8 @@
 using FreeCourse.Services.OrderService.Application;
+using FreeCourse.Services.OrderService.Application.Consumer;
 using FreeCourse.Services.OrderService.Infrastructure.AppContext;
 using FreeCourse.Shared.Services;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +31,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     opt.Authority = builder.Configuration["IdentityServerUrl"];
     opt.RequireHttpsMetadata = false;
 });
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<CreateOrderMessageCommandConsumer>();
+    x.AddConsumer<CourseNameChangedEventConsumer>();
+    // Default Port : 5672
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMqUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint("create-order-service", e =>
+        {
+            e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+        });
+
+        cfg.ReceiveEndpoint("course-NameChanged-event-order-service", e =>
+        {
+            e.ConfigureConsumer<CourseNameChangedEventConsumer>(context);
+        });
+    });
+});
+
+builder.Services.AddMassTransitHostedService();
 
 builder.Services.AddMediatR(typeof(AssemblyExample).Assembly);
 builder.Services.AddHttpContextAccessor();
