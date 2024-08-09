@@ -30,7 +30,7 @@ namespace FreeCourse.Web.Services.Concrete
             {
                 return currentToken.AccessToken;
             }
-
+             
             var discoveryEndpoints = await httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
                 Address = serviceApiSettings.IdentityBaseUri,

@@ -112,9 +112,7 @@ namespace FreeCourse.IdentityServer
                         "CatologFullPermission" ,
                         "PhotoStockFullPermission",
                         "BasketFullPermission",
-                        "DiscountFullPermission",
                         "OrderFullPermission",
-                        "FakePaymentFullPermission",
                         "GatewayFullPermission",
                         IdentityServerConstants.LocalApi.ScopeName,
                         IdentityServerConstants.StandardScopes.Email,
@@ -127,6 +125,22 @@ namespace FreeCourse.IdentityServer
                     RefreshTokenExpiration = TokenExpiration.Absolute,  // Absolute gün artışını engeller.
                     AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60) - DateTime.Now).TotalSeconds,
                     RefreshTokenUsage = TokenUsage.ReUse, // Token tekrar kullanılabilir. 
+                },
+                new Client
+                {
+                    ClientName = "Token Exchange Client",
+                    ClientId = "TokenExchangeClient",
+                    ClientSecrets =
+                    {
+                        new Secret("0oa2hl2inow5Uqc6c357".Sha256())
+                    },
+                    AllowedGrantTypes = new []{ "urn:ietf:params:oauth:grant-type:token-exchange" },
+                    AllowedScopes=
+                    {
+                        "FakePaymentFullPermission",
+                        "DiscountFullPermission",
+                        IdentityServerConstants.StandardScopes.OpenId,
+                    },
                 },
 
             };

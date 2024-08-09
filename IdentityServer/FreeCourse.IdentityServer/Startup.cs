@@ -40,6 +40,7 @@ namespace FreeCourse.IdentityServer
                 .AddDefaultTokenProviders();
 
             
+            
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -56,6 +57,9 @@ namespace FreeCourse.IdentityServer
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+
+            // TOKEN EXCHANGE
+            builder.AddExtensionGrantValidator<TokenExchangeExtensionGrantValidatior>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
